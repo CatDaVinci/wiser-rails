@@ -1,9 +1,9 @@
 class Api::V1::ApplicationController < ApplicationController
-  def render_error(code, error_type, error_message)
-    json = {
-      error: error_type,
-      message: error_message
-    }
-    render json: json, status: code
+  def render_success(object = {}, status = :ok, options = {})
+    render options.merge({:json => object, :status => status})
+  end
+
+  def render_errors(object, status = :bad_request, options = {})
+    render options.merge({:json => {:errors => object}, :status => status})
   end
 end

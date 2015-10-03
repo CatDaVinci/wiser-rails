@@ -12,6 +12,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rack-cors', :require => 'rack/cors'
 gem 'active_model_serializers'
+gem 'therubyracer'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'

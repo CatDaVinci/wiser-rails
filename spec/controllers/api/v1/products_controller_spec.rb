@@ -21,34 +21,30 @@ RSpec.describe Api::V1::ProductsController, :type => :controller do
   end
 
   describe "PUT update" do
-    let(:product_attr) { attributes_for(:product) }
+    let!(:product_attr) { attributes_for(:product) }
     let!(:product) { create(:product) }
-    let!(:update_request) { put :update, id: product.id,
-                            product: { title: product_attr[:title], sku: product_attr[:sku], category: product_attr[:category]} }
+    let(:update_request) { put :update, id: product.id,
+                            product: product_attr }
     let(:update_response) { JSON.parse response.body }
 
-    context 'response' do
-      before { update_request }
+    before { update_request }
 
+    context 'response' do
       it 'should have status updated' do
         expect(response).to have_http_status(:accepted)
       end
 
-      it 'should have product' do
-        p product_attr
-        expect(update_response['product']['title']).to eq product_attr[:title]
-        expect(update_response['product']['sku']).to eq product_attr[:sku]
-        expect(update_response['product']['category']).to eq product_attr[:category]
+      context 'should have product' do
+        it { expect(update_response['product']['title']).to eq product_attr[:title] }
+        it { expect(update_response['product']['sku']).to eq product_attr[:sku] }
+        it { expect(update_response['product']['category']).to eq product_attr[:category] }
       end
     end
 
     context 'when product update' do
-      it 'should have updated product' do
-        p product_attr
-        expect(Product.find(product.id).title).to eq product_attr[:title]
-        expect(Product.find(product.id).sku).to eq product_attr[:sku]
-        expect(Product.find(product.id).category).to eq product_attr[:category]
-      end
+      it { expect(Product.find(product.id)['title']).to eq product_attr[:title] }
+      it { expect(Product.find(product.id).sku).to eq product_attr[:sku] }
+      it { expect(Product.find(product.id).category).to eq product_attr[:category] }
     end
 
   end

@@ -1,4 +1,8 @@
 class Api::V1::ApplicationController < ApplicationController
+  def default_serializer_options
+    {root: false}
+  end
+
   def render_success(object = {}, status = :ok, options = {})
     render options.merge({:json => object, :status => status})
   end

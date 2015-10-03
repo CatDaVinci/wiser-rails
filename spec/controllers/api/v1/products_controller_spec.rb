@@ -14,7 +14,7 @@ RSpec.describe Api::V1::ProductsController, :type => :controller do
 
     context "response" do
       it('should have status ok') { expect(response).to have_http_status(:ok) }
-      it('have products') { expect(response_body["products"].count).to eq 100 }
+      it('have products') { expect(response_body.count).to eq 20 }
     end
   end
 
@@ -24,11 +24,19 @@ RSpec.describe Api::V1::ProductsController, :type => :controller do
     let(:request) { put :update, id: product.id, product: product_attrs }
 
     it('should have status updated') { expect(response).to have_http_status(:accepted) }
-    it { expect(response_body['product']['title']).to eq product_attrs[:title] }
-    it { expect(response_body['product']['sku']).to eq product_attrs[:sku] }
-    it { expect(response_body['product']['category']).to eq product_attrs[:category] }
+    it { expect(response_body['title']).to eq product_attrs[:title] }
+    it { expect(response_body['sku']).to eq product_attrs[:sku] }
+    it { expect(response_body['category']).to eq product_attrs[:category] }
     it { expect(product.reload.title).to eq product_attrs[:title] }
     it { expect(product.reload.sku).to eq product_attrs[:sku] }
     it { expect(product.reload.category).to eq product_attrs[:category] }
+  end
+
+  describe 'DELETE destroy' do
+    let(:product) { create(:product) }
+    let(:request) { delete :destroy, id: product.id }
+
+    it('should have status ok') { expect(response).to have_http_status(:ok) }
+    #it{ expect{request}.to change { Product.count(-1) } }
   end
 end

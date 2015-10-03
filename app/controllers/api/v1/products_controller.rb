@@ -1,16 +1,22 @@
 class Api::V1::ProductsController < Api::V1::ApplicationController
   def index
-    @products = Product.all
-    render_success(@products, :ok, root: :products)
+    @products = Product.paginate(page: params[:page], per_page: 20)
+    render_success(@products)
   end
 
   def update
     @product = Product.find(params[:id])
     if @product.update(product_params)
-      render_success(@product, :accepted, root: :product)
+      render_success(@product, :accepted)
     else
       render_errors(@product.errors, 422)
     end
+  end
+
+  def destroy
+    binding.pry
+    @product = Product.find(params[:id]).destroy
+    render_success(@product)
   end
 
   private

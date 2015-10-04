@@ -2,7 +2,6 @@ class Api::V1::ProductsController < Api::V1::ApplicationController
   def index
     case params[:filter]
     when 'sport'
-      binding.pry
       @products = Product.for_sport
     when 'music'
       @products = Product.for_music

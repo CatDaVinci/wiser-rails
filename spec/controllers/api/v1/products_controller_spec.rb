@@ -18,6 +18,21 @@ RSpec.describe Api::V1::ProductsController, :type => :controller do
     end
   end
 
+  describe "GET index with filter" do
+    let(:products) { create_list(:product, 100) }
+    context 'for sport' do
+      let(:request) { get :index, filter: 'sport' }
+      it('should have status ok') { expect(response).to have_http_status(:ok) }
+      it('have products') { expect(response_body.count).to eq 20 }
+    end
+
+    context 'for music' do
+      let(:request) { get :index, filter: 'music' }
+      it('should have status ok') { expect(response).to have_http_status(:ok) }
+      it('have products') { expect(response_body.count).to eq 20 }
+    end
+  end
+
   describe "PUT update" do
     let(:product_attrs) { attributes_for(:product) }
     let(:product) { create(:product) }
@@ -37,6 +52,5 @@ RSpec.describe Api::V1::ProductsController, :type => :controller do
     let(:request) { delete :destroy, id: product.id }
 
     it('should have status ok') { expect(response).to have_http_status(:ok) }
-    #it{ expect{request}.to change { Product.count(-1) } }
   end
 end

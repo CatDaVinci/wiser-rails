@@ -6,6 +6,6 @@ class Product < ActiveRecord::Base
   validates :sku, numericality: { greater_than_or_equel_to: 0, less_than_or_equal_to: 1000000 }
   validates :category, inclusion: { in: Product.categories.keys }
 
-  scope :for_sport, -> { where(category: 'sport') }
-  scope :for_music, -> { where(category: 'music') }
+  scope :for_sport, -> { where(category: categories[:sport]) }
+  scope :for_music, -> { where(category: categories[:music]) }
 end

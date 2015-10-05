@@ -6,12 +6,8 @@ class Api::V1::ApplicationController < ApplicationController
   end
 
   def render_success(object = {}, status = :ok, options = {})
-    if object.respond_to?(:total_entries)
-      headers['X-Pagination'] = {
-        current_page: object.current_page,
-        per_page: object.per_page,
-        total_pages: object.total_pages
-      }.to_json
+    if object.respond_to?(:total_pages)
+      headers['X-Pagination-Total'] = object.total_pages
     end
     render options.merge({:json => object, :status => status})
   end

@@ -8,8 +8,8 @@ class Api::V1::ProductsController < Api::V1::ApplicationController
     else
       @products = Product.all
     end
-    @products = @products.paginate(page: params[:page], per_page: 20)
-    render_success(@products)
+    @products = @products.order(:id).paginate(page: params[:page], per_page: 20)
+    render_success(@products, :ok, total_pages: @products.total_pages)
   end
 
   def update
